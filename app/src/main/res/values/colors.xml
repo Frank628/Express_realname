@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="contentbackground">#f5f5f5</color>
+    <color name="unpressed">#00ffffff</color>
+    <color name="white_pressed">#ecf2fa</color>
+    <color name="title1">#333333</color>
+    <color name="title2">#666666</color>
+    <color name="title3">#999999</color>
+    <color name="title4">#c8c8c8</color>
+    <color name="title5">#dfdfdf</color>
+
+    <color name="scan_bg">#7f000000</color>
+    <color name="idcard_title">#1579B9</color>
+</resources>
