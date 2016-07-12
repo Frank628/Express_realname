@@ -21,10 +21,8 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity
-            android:name="com.jinchao.express.activity.MainActivity"/>
-        <activity
-            android:name="com.jinchao.express.activity.ScanActivity"/>
+        <activity android:name="com.jinchao.express.activity.MainActivity"/>
+        <activity android:name="com.jinchao.express.activity.ScanActivity"/>
         <activity android:name=".activity.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
