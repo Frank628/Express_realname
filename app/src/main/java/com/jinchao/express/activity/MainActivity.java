@@ -19,6 +19,7 @@ import android.widget.TextView;
 
 import com.jinchao.express.R;
 import com.jinchao.express.fragment.CaiJiFragment;
+import com.jinchao.express.fragment.SendDataFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -71,6 +72,7 @@ public class MainActivity extends AppCompatActivity
             title.setText("设置");
         } else if (id == R.id.nav_send) {
             title.setText("数据发送");
+            changeFragment(new SendDataFragment());
         }else if(id==R.id.nav_operation){
             title.setText("快递实名登记");
             changeFragment(new CaiJiFragment());
