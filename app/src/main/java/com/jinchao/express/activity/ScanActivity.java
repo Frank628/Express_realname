@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.google.zxing.Result;
 import com.jinchao.express.R;
 import com.jinchao.express.base.BaseActivity;
+import com.jinchao.express.fragment.CaiJiFragment;
 import com.jinchao.express.widget.CaptureImageView;
 import com.jinchao.express.zxing.ScanListener;
 import com.jinchao.express.zxing.ScanManager;
@@ -86,6 +87,7 @@ public class ScanActivity extends BaseActivity implements ScanListener{
         scan_image.setVisibility(View.VISIBLE);
         tv_scan_result.setVisibility(View.VISIBLE);
         tv_scan_result.setText("快递单号："+rawResult.getText());
+
     }
 
     @Override
@@ -116,5 +118,9 @@ public class ScanActivity extends BaseActivity implements ScanListener{
     @Event(value = R.id.btn_rescan)
     private void rescanClick(View view){
         startScan();
+    }
+    @Event(value = R.id.btn_ensure)
+    private void ensureClick(View view){
+        ScanActivity.this.finishActivity(CaiJiFragment.BAR_SCAN_RESULT);
     }
 }

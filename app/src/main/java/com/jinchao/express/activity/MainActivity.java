@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.jinchao.express.R;
 import com.jinchao.express.fragment.CaiJiFragment;
 import com.jinchao.express.fragment.SendDataFragment;
+import com.jinchao.express.fragment.SettingFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -70,6 +71,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_manage) {
             title.setText("设置");
+            changeFragment(new SettingFragment());
         } else if (id == R.id.nav_send) {
             title.setText("数据发送");
             changeFragment(new SendDataFragment());
