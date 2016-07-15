@@ -22,8 +22,7 @@ import com.jinchao.express.fragment.CaiJiFragment;
 import com.jinchao.express.fragment.SendDataFragment;
 import com.jinchao.express.fragment.SettingFragment;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private Toolbar toolbar;
     private TextView title;
     @Override
