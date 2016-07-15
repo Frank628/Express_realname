@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ public class CaiJiFragment extends BaseFragment {
 
     @ViewInject(R.id.btn_scan) ImageButton btn_scan;
     @ViewInject(R.id.idcard) IDCardView idCardView;
+    @ViewInject(R.id.edt_yundanhao) EditText edt_yundanhao;
     public static final int BAR_SCAN_RESULT=100;
 
 
@@ -52,12 +54,14 @@ public class CaiJiFragment extends BaseFragment {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode){
-            case BAR_SCAN_RESULT:
-
-                break;
-            default:
-                break;
+        if (resultCode==getActivity().RESULT_OK) {
+            switch (requestCode) {
+                case BAR_SCAN_RESULT:
+                    edt_yundanhao.setText(data.getStringExtra("yundanhao"));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }

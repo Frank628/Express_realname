@@ -1,6 +1,7 @@
 package com.jinchao.express.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -42,7 +43,7 @@ public class ScanActivity extends BaseActivity implements ScanListener{
     @ViewInject(R.id.scan_image)CaptureImageView scan_image;
     @ViewInject(R.id.btn_rescan) Button btn_rescan;
     @ViewInject(R.id.btn_ensure) Button btn_ensure;
-
+    private String yundanhao="";
     ScanManager scanManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +88,7 @@ public class ScanActivity extends BaseActivity implements ScanListener{
         scan_image.setVisibility(View.VISIBLE);
         tv_scan_result.setVisibility(View.VISIBLE);
         tv_scan_result.setText("快递单号："+rawResult.getText());
-
+        yundanhao=rawResult.getText();
     }
 
     @Override
@@ -100,6 +101,7 @@ public class ScanActivity extends BaseActivity implements ScanListener{
     }
 
     void startScan() {
+        yundanhao="";
         if (btn_rescan.getVisibility() == View.VISIBLE) {
             btn_rescan.setVisibility(View.GONE);
             btn_ensure.setVisibility(View.GONE);
@@ -121,6 +123,9 @@ public class ScanActivity extends BaseActivity implements ScanListener{
     }
     @Event(value = R.id.btn_ensure)
     private void ensureClick(View view){
-        ScanActivity.this.finishActivity(CaiJiFragment.BAR_SCAN_RESULT);
+        Intent intent=new Intent();
+        intent.putExtra("yundanhao",yundanhao);
+        setResult(RESULT_OK,intent);
+        ScanActivity.this.finish();
     }
 }
