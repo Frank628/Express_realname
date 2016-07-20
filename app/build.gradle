@@ -26,4 +26,5 @@ dependencies {
     compile 'com.android.support:design:24.0.0'
     compile 'org.xutils:xutils:3.3.36'
     compile files('libs/zxing-4.7.5.jar')
+    compile 'com.android.support:support-annotations:24.0.0'
 }
