@@ -1,6 +1,7 @@
 package com.jinchao.express.fragment;
 
 import android.content.Intent;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -11,6 +12,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.jinchao.express.R;
 import com.jinchao.express.activity.ScanActivity;
@@ -66,7 +68,18 @@ public class CaiJiFragment extends BaseFragment {
         ContactsPop pop=new ContactsPop(getActivity(),CommonUtils.getWindowWidth(getActivity())-CommonUtils.dip2px(getActivity(),6)-width,CommonUtils.getWindowHeight(getActivity())-CommonUtils.getStatusBarHeight(getActivity()),location[1]-CommonUtils.getStatusBarHeight(getActivity()),ib_addcustom.getMeasuredHeight());
         pop.showPopupWindow(root,width+CommonUtils.dip2px(getActivity(),6),CommonUtils.getStatusBarHeight(getActivity()));
     }
-
+    @Event(value = R.id.btn_readcard)
+    private void readCardClick(View view){
+        NfcAdapter nfcAdapter=NfcAdapter.getDefaultAdapter(getActivity());
+        if (nfcAdapter==null){
+            Toast.makeText(getActivity(),"NFC设备不支持！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (!nfcAdapter.isEnabled()){
+            Toast.makeText(getActivity(),"请在系统设置中先启用NFC功能！",Toast.LENGTH_SHORT).show();
+            return;
+        }
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

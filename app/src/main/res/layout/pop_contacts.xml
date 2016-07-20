@@ -32,7 +32,7 @@
            app:queryHint="请输入姓名或拼音"
            ></android.support.v7.widget.SearchView>
     </RelativeLayout>
-    <RelativeLayout
+    <FrameLayout
         android:id="@id/rl_contacts"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -41,11 +41,16 @@
         android:layout_toRightOf="@+id/sanjiao"
         android:layout_below="@+id/rl_search"
         android:layout_marginTop="2dp"
-
         >
+        <ListView
+            android:id="@+id/lv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+        </ListView>
         <com.jinchao.express.widget.SideBar
+            android:id="@+id/sidebar"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
-    </RelativeLayout>
+    </FrameLayout>
 </RelativeLayout>

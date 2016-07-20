@@ -6,4 +6,5 @@ package com.jinchao.express.nfc;
 public class NFCManager {
 
 
+
 }

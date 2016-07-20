@@ -20,7 +20,7 @@ public class SideBar extends View {
 
     private static final String TAG = SideBar.class.getSimpleName();
 
-    interface OnTouchingLetterChangedListener {
+    public interface OnTouchingLetterChangedListener {
         void onTouchingLetterChanged(String s);
     }
 
@@ -115,7 +115,7 @@ public class SideBar extends View {
                         if (characterIndex >= 0 && characterIndex < mLetters.length) {
                             mChoose = characterIndex;
                             Log.d(TAG, "mChoose " + mChoose + " mLetterHeight " + mLetterHeight);
-//                            mOnTouchingLetterChangedListener.onTouchingLetterChanged(mLetters[characterIndex]);
+                            mOnTouchingLetterChangedListener.onTouchingLetterChanged(mLetters[mChoose]);
                         }
                     }
                     invalidate();
@@ -232,4 +232,6 @@ public class SideBar extends View {
             mActivePointerId = MotionEventCompat.getPointerId(ev, newPointerIndex);
         }
     }
+
+
 }
