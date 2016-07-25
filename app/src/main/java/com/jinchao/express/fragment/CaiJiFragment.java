@@ -2,6 +2,9 @@ package com.jinchao.express.fragment;
 
 import android.content.Intent;
 import android.nfc.NfcAdapter;
+import android.nfc.Tag;
+import android.nfc.tech.MifareClassic;
+import android.nfc.tech.NfcB;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -38,7 +41,9 @@ public class CaiJiFragment extends BaseFragment {
     @ViewInject(R.id.ib_addcustom) ImageButton ib_addcustom;
     @ViewInject(R.id.root) LinearLayout root;
     public static final int BAR_SCAN_RESULT=100;
-
+    private Tag tagNFC;
+    private NfcB nfcB;
+    private NfcAdapter nfcAdapter;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -70,15 +75,21 @@ public class CaiJiFragment extends BaseFragment {
     }
     @Event(value = R.id.btn_readcard)
     private void readCardClick(View view){
-        NfcAdapter nfcAdapter=NfcAdapter.getDefaultAdapter(getActivity());
+        nfcAdapter=NfcAdapter.getDefaultAdapter(getActivity());
         if (nfcAdapter==null){
-            Toast.makeText(getActivity(),"NFC设备不支持！",Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),"设备不支持NFC！",Toast.LENGTH_SHORT).show();
             return;
         }
         if (!nfcAdapter.isEnabled()){
             Toast.makeText(getActivity(),"请在系统设置中先启用NFC功能！",Toast.LENGTH_SHORT).show();
             return;
         }
+        processIntent(getActivity().getIntent());
+    }
+    private void processIntent(Intent intent){
+        tagNFC=intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
+
+
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
