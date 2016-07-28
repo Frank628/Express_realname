@@ -1,5 +1,11 @@
 package com.jinchao.express.activity;
 
+import android.app.AlertDialog;
+import android.app.PendingIntent;
+import android.content.Intent;
+import android.nfc.NdefMessage;
+import android.nfc.NdefRecord;
+import android.nfc.NfcAdapter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -16,33 +22,74 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
+
+import com.Common;
 import com.jinchao.express.R;
+import com.jinchao.express.base.BaseActivity;
 import com.jinchao.express.fragment.CaiJiFragment;
 import com.jinchao.express.fragment.SendDataFragment;
 import com.jinchao.express.fragment.SettingFragment;
+import com.jinchao.express.utils.CommonUtils;
 
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
+
+import java.util.Locale;
+
+@ContentView(R.layout.activity_main)
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private Toolbar toolbar;
-    private TextView title;
+    @ViewInject(R.id.toolbar) private Toolbar toolbar;
+    @ViewInject(R.id.title)private TextView title;
+    private Fragment currentFragment;
+    private NfcAdapter mAdapter;
+    protected PendingIntent mPendingIntent;
+    protected NdefMessage mNdefPushMessage;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        x.view().inject(this);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
-        title=(TextView) findViewById(R.id.title);
-        title.setText("快递实名登记");
+        title.setText(getResources().getString(R.string.realname));
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.setDrawerListener(toggle);
         toggle.syncState();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        changeFragment(new CaiJiFragment());
+        currentFragment=new CaiJiFragment();
+        changeFragment(currentFragment);
+        if (!Common.init(this)){
+            Toast.makeText(this, "身份证云终端开发包初始化失败！", Toast.LENGTH_SHORT).show();
+            finish();
+        }
+       initNFC();
+    }
+    private void initNFC(){
+        mAdapter = NfcAdapter.getDefaultAdapter(this);
+        if (mAdapter == null) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this, AlertDialog.THEME_HOLO_LIGHT);
+            builder.setMessage("手机不支持NFC,部分功能无法使用");
+            builder.setPositiveButton(android.R.string.ok, null);
+            builder.create().show();
+        }
+        mPendingIntent = PendingIntent.getActivity(this, 0,
+                new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+        mNdefPushMessage = new NdefMessage(
+                new NdefRecord[] {CommonUtils.newTextRecord("Message from NFC Reader :-)", Locale.ENGLISH, true) });
+    }
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (currentFragment!=null){
+            if (currentFragment instanceof  CaiJiFragment){
+                ((CaiJiFragment)currentFragment).onNewIntent(intent);
+            }
+        }
     }
 
     @Override
@@ -69,17 +116,44 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         int id = item.getItemId();
 
         if (id == R.id.nav_manage) {
-            title.setText("设置");
-            changeFragment(new SettingFragment());
+            title.setText(getResources().getString(R.string.setting));
+            currentFragment=new SettingFragment();
+            changeFragment(currentFragment);
         } else if (id == R.id.nav_send) {
-            title.setText("数据发送");
-            changeFragment(new SendDataFragment());
+            title.setText(getResources().getString(R.string.senddata));
+            currentFragment=new SendDataFragment();
+            changeFragment(currentFragment);
         }else if(id==R.id.nav_operation){
-            title.setText("快递实名登记");
-            changeFragment(new CaiJiFragment());
+            title.setText(getResources().getString(R.string.realname));
+            currentFragment=new CaiJiFragment();
+            changeFragment(currentFragment);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (mAdapter != null) {
+            // 显示activity的时候开始nfc的监控
+            if (!mAdapter.isEnabled()) {
+                // showNfcSettingsDialog();
+            } else {
+                mAdapter.enableForegroundDispatch(this, mPendingIntent, null, null);
+                mAdapter.enableForegroundNdefPush(this, mNdefPushMessage);
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mAdapter != null) {
+            // activity暂停的时候，暂停nfc的监控
+            mAdapter.disableForegroundDispatch(this);
+            mAdapter.disableForegroundNdefPush(this);
+        }
     }
 }

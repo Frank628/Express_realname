@@ -9,9 +9,12 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.jinchao.express.MyApplication;
 import com.jinchao.express.R;
+import com.jinchao.express.location.MyLocation;
 import com.jinchao.express.utils.CommonUtils;
 import com.jinchao.express.widget.ArrowRectangleView;
 import com.jinchao.express.widget.SideBar;
@@ -24,6 +27,7 @@ import java.util.List;
  */
 public class ContactsPop extends PopupWindow {
     private ListView lv;
+    private TextView tv_location;
     public ContactsPop(final Context context, int width, int height, int arrowoffset, int ibHeight) {
         LayoutInflater inflater= (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView=inflater.inflate(R.layout.pop_contacts,null);
@@ -40,6 +44,7 @@ public class ContactsPop extends PopupWindow {
     }
     private void initView(View v,final Context context, int arrowoffset, int ibHeight){
         ArrowRectangleView arrow= (ArrowRectangleView) v.findViewById(R.id.sanjiao);
+        tv_location= (TextView) v.findViewById(R.id.tv_location);
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) arrow.getLayoutParams();
         params.setMargins(0,arrowoffset+(ibHeight- CommonUtils.dip2px(context,20))/2,0,0);
         arrow.setLayoutParams(params);
@@ -48,7 +53,7 @@ public class ContactsPop extends PopupWindow {
         sideBar.setOnTouchingLetterChangedListener(new SideBar.OnTouchingLetterChangedListener() {
             @Override
             public void onTouchingLetterChanged(String s) {
-                Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context,s,Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -57,8 +62,15 @@ public class ContactsPop extends PopupWindow {
         List<String> contactStrings = Arrays.asList(context.getResources().getStringArray(R.array.contact_array));
 
     }
+
+    public void setLocationAddress(MyLocation myLocation){
+        if (tv_location!=null){
+            tv_location.setText(myLocation.getAddress());
+        }
+    }
     public void showPopupWindow(View parent,int x,int y){
         if (!this.isShowing()) {
+            MyApplication.myApplication.locationService.start();
             this.showAtLocation(parent, Gravity.TOP,x,y);
         } else {
             this.dismiss();

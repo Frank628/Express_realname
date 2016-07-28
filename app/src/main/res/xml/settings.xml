@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <PreferenceCategory android:title="解码服务器设置" >
+        <EditTextPreference
+            android:key="ip"
+            android:title="IP地址" />
+        <EditTextPreference
+            android:key="port"
+            android:title="端口号" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="读卡方式设置" >
+        <ListPreference
+            android:dialogTitle="@string/dialogTitle"
+            android:entries="@array/flight_sort_options"
+            android:entryValues="@array/flight_sort_options_values"
+            android:key="type"
+            android:title="读卡方式" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="数据通信安全设置" >
+        <CheckBoxPreference
+            android:key="encrypt"
+            android:title="加密" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

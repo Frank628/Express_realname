@@ -31,4 +31,49 @@
         <item>Z</item>
     </string-array>
 
+
+   <string-array name="flight_sort_options">
+      <item>USB</item>
+      <item>蓝牙</item>
+   </string-array>
+   <string-array name="flight_sort_options_values">
+      <item>0</item>
+      <item>1</item>
+   </string-array>
+
+   <string-array name="app_names">
+      <item>身份证</item>
+      <item>SIM卡</item>
+      <item>固件升级</item>
+   </string-array>
+
+   <string-array name="app_names_summary">
+      <item>蓝牙、OTG读卡</item>
+      <item>SIM卡信息读写</item>
+      <item>更新设备固件</item>
+   </string-array>
+
+   <string-array name="app_icons">
+      <item>read</item>
+      <item>sim</item>
+      <item>upgrade</item>
+   </string-array>
+
+   <string-array name="baudrate">
+      <item>4800</item>
+      <item>9600</item>
+      <item>19200</item>
+      <item>38400</item>
+      <item>57600</item>
+      <item>115200</item>
+      <item>230400</item>
+      <item>460800</item>
+      <item>921600</item>
+   </string-array>
+
+   <string-array name="parity">
+      <item>无校验</item>
+      <item>ODD 奇校验</item>
+      <item>EVEN 偶校验</item>
+   </string-array>
 </resources>

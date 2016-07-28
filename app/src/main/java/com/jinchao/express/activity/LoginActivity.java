@@ -30,29 +30,32 @@ import android.widget.EditText;
 import android.widget.TextView;
 import com.jinchao.express.R;
 import com.jinchao.express.utils.CommonUtils;
+import com.jinchao.express.widget.NavigationLayout;
 
+import org.xutils.view.annotation.ContentView;
+import org.xutils.view.annotation.ViewInject;
+import org.xutils.x;
 
-
-/**
- * A login screen that offers login via email/password.
- */
+@ContentView(R.layout.activity_login)
 public class LoginActivity extends AppCompatActivity{
 
-
-
-    // UI references.
-    private AutoCompleteTextView mEmailView;
-    private EditText mPasswordView;
-    private View mProgressView;
-    private View mLoginFormView;
-
+    @ViewInject(R.id.navigation) NavigationLayout navigationLayout;
+    @ViewInject(R.id.email) private AutoCompleteTextView mEmailView;
+    @ViewInject(R.id.password) private EditText mPasswordView;
+    @ViewInject(R.id.login_form) private View mLoginFormView;
+    @ViewInject(R.id.email_sign_in_button) private  Button mEmailSignInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        x.view().inject(this);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
-        mPasswordView = (EditText) findViewById(R.id.password);
+        navigationLayout.setCenterText(getResources().getString(R.string.title_activity_login));
+        navigationLayout.setLeftTextOnClick(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LoginActivity.this.finish();
+            }
+        });
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -64,15 +67,13 @@ public class LoginActivity extends AppCompatActivity{
             }
         });
 
-        Button mEmailSignInButton = (Button) findViewById(R.id.email_sign_in_button);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {
                 attemptLogin();
             }
         });
-        mLoginFormView = findViewById(R.id.login_form);
-        mProgressView = findViewById(R.id.login_progress);
+
     }
 
 
