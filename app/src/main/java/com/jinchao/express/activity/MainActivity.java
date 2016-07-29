@@ -2,7 +2,11 @@ package com.jinchao.express.activity;
 
 import android.app.AlertDialog;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.hardware.usb.UsbManager;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -47,6 +51,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private NfcAdapter mAdapter;
     protected PendingIntent mPendingIntent;
     protected NdefMessage mNdefPushMessage;
+    private USBBroadcastReceiver receiveBroadCast;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +72,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             Toast.makeText(this, "身份证云终端开发包初始化失败！", Toast.LENGTH_SHORT).show();
             finish();
         }
-       initNFC();
+        //注册usb广播
+        receiveBroadCast = new USBBroadcastReceiver();
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_ATTACHED);
+        filter.addAction(UsbManager.ACTION_USB_DEVICE_DETACHED);
+        registerReceiver(receiveBroadCast, filter);
+        initNFC();
     }
     private void initNFC(){
         mAdapter = NfcAdapter.getDefaultAdapter(this);
@@ -91,7 +102,16 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
         }
     }
-
+    public class USBBroadcastReceiver extends BroadcastReceiver {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_ATTACHED)) {
+//                headPanel.setRightTitle(R.drawable.usb);
+            } else if (intent.getAction().equals(UsbManager.ACTION_USB_DEVICE_DETACHED)) {
+//                headPanel.setRightTitle(R.drawable.bt);
+            }
+        }
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -136,6 +156,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onResume() {
         super.onResume();
+        UsbManager mUsbManager = (UsbManager) this.getSystemService(Context.USB_SERVICE);
+        if (!mUsbManager.getDeviceList().isEmpty()) {
+//            headPanel.setRightTitle(R.drawable.usb);
+        }
         if (mAdapter != null) {
             // 显示activity的时候开始nfc的监控
             if (!mAdapter.isEnabled()) {
@@ -154,6 +178,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             // activity暂停的时候，暂停nfc的监控
             mAdapter.disableForegroundDispatch(this);
             mAdapter.disableForegroundNdefPush(this);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (receiveBroadCast != null) {
+            unregisterReceiver(receiveBroadCast);
+            receiveBroadCast = null;
         }
     }
 }

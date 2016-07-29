@@ -1,7 +1,17 @@
 package com.jinchao.express.utils;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.nfc.NdefRecord;
+import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
+import android.util.Base64;
 import android.view.WindowManager;
 
 import com.jinchao.express.Constants;
@@ -9,9 +19,16 @@ import com.jinchao.express.Constants;
 import org.xutils.DbManager;
 import org.xutils.x;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.nio.charset.Charset;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -88,7 +105,58 @@ public class CommonUtils {
         return (int) (pxValue / scale + 0.5f);
     }
 
-
+    /**
+     * 将文件变成byte数组
+     *
+     * @param file
+     * @return
+     */
+    public static byte[] getByte(File file) {
+        byte[] buffer = null;
+        FileInputStream fis = null;
+        ByteArrayOutputStream bos = null;
+        try {
+            fis = new FileInputStream(file);
+            bos = new ByteArrayOutputStream(1000);
+            byte[] b = new byte[1000];
+            int n;
+            while ((n = fis.read(b)) != -1) {
+                bos.write(b, 0, n);
+            }
+            buffer = bos.toByteArray();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (fis != null) {
+                    fis.close();
+                }
+                if (bos != null) {
+                    bos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return buffer;
+    }
+    public static byte[] Bitmap2Bytes(Bitmap bm, Bitmap.CompressFormat format, int quality) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bm.compress(format, quality, baos);
+        return baos.toByteArray();
+    }
+    /**
+     * 把jpg转换成尺寸小的byte数组
+     *
+     * @param bm
+     *
+     * @return
+     */
+    public static byte[] Bitmap2Bytes(Bitmap bm) {
+        return Bitmap2Bytes(bm, Bitmap.CompressFormat.JPEG, 50);
+    }
     public static NdefRecord newTextRecord(String text, Locale locale, boolean encodeInUtf8) {
         byte[] langBytes = locale.getLanguage().getBytes(Charset.forName("US-ASCII"));
 
@@ -104,5 +172,39 @@ public class CommonUtils {
         System.arraycopy(textBytes, 0, data, 1 + langBytes.length, textBytes.length);
 
         return new NdefRecord(NdefRecord.TNF_WELL_KNOWN, NdefRecord.RTD_TEXT, new byte[0], data);
+    }
+    @SuppressLint("SimpleDateFormat")
+    public static File getTempImage() {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "IMG_face.jpg");
+    }
+    public static String  getSdPath() {
+        String path="";
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/";
+        }else{
+            path="/data"+ Environment.getDataDirectory().getAbsolutePath() + "/com.jinchao.express/databases";
+        }
+        return path;
+    }
+
+    public static Bitmap base64ToBitmap(String base64Data) {
+        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+    public static String getPicPath(String type){
+        String path="";
+        String name =GenerateGUID();
+        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
+            path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/express/temp/"+name+".jpg";
+        }else{
+            path="/data"+ Environment.getDataDirectory().getAbsolutePath() + "/com.jinchao.express/databases/temp/"+name+".jpg";
+        }
+        return path;
+    }
+
+    public static final String GenerateGUID(){
+        UUID uuid = UUID.randomUUID();
+        return uuid.toString();
     }
 }

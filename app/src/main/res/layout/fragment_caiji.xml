@@ -17,7 +17,7 @@
             android:layout_weight="1"
             >
             <ImageView
-                android:id="@+id/iv_kuaidi"
+                android:id="@+id/iv_kuaijian"
                 android:layout_width="match_parent"
                 android:layout_height="100dp"
                 android:layout_margin="12dp"
@@ -26,9 +26,10 @@
                 android:background="@drawable/take_pic_bg"
                 />
             <Button
+                android:id="@+id/btn_kuaijian"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/iv_kuaidi"
+                android:layout_below="@+id/iv_kuaijian"
                 android:text="拍摄快件"
                 android:layout_marginLeft="12dp"
                 android:layout_marginRight="12dp"/>
@@ -47,6 +48,7 @@
                 android:scaleType="centerInside"
                 android:background="@drawable/take_pic_bg"/>
             <Button
+                android:id="@+id/btn_kuaididan"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="12dp"
@@ -111,6 +113,19 @@
             android:src="@drawable/add_custom_bg"
             android:layout_marginLeft="6dp"
             android:background="@null"/>
+        <TextView
+            android:id="@+id/facematch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="15dp"
+            android:padding="6dp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:background="@drawable/btn_login_click"
+            android:visibility="gone"
+            android:text="人脸对比"/>
     </RelativeLayout>
     <LinearLayout
         android:layout_width="match_parent"

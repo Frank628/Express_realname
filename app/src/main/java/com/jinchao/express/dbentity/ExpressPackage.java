@@ -6,9 +6,9 @@ import org.xutils.db.annotation.Table;
 /**
  * Created by OfferJiShu01 on 2016/7/28.
  */
-@Table(name = "expresspackage")
+@Table(name = "express")
 public class ExpressPackage {
-    @Column(name = "id",isId = true)
+    @Column(name = "id",isId = true,autoGen=true)
     private int id;
     @Column(name = "idcard")
     private String idcard;
@@ -30,6 +30,23 @@ public class ExpressPackage {
     private String address;
     @Column(name = "yundanhao")
     private String yundanhao;
+    @Column(name = "time")
+    private String time;
+    public ExpressPackage() {
+    }
+
+    public ExpressPackage(String idcard, String name, String gender, String birth, String nation, String packagepic, String expresspic, String personpic, String address, String yundanhao) {
+        this.idcard = idcard;
+        this.name = name;
+        this.gender = gender;
+        this.birth = birth;
+        this.nation = nation;
+        this.packagepic = packagepic;
+        this.expresspic = expresspic;
+        this.personpic = personpic;
+        this.address = address;
+        this.yundanhao = yundanhao;
+    }
 
     public int getId() {
         return id;
@@ -117,5 +134,31 @@ public class ExpressPackage {
 
     public void setYundanhao(String yundanhao) {
         this.yundanhao = yundanhao;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    @Override
+    public String toString() {
+        return "ExpressPackage{" +
+                "id=" + id +
+                ", idcard='" + idcard + '\'' +
+                ", name='" + name + '\'' +
+                ", gender='" + gender + '\'' +
+                ", birth='" + birth + '\'' +
+                ", nation='" + nation + '\'' +
+                ", packagepic='" + packagepic + '\'' +
+                ", expresspic='" + expresspic + '\'' +
+                ", personpic='" + personpic + '\'' +
+                ", address='" + address + '\'' +
+                ", yundanhao='" + yundanhao + '\'' +
+                ", time='" + time + '\'' +
+                '}';
     }
 }

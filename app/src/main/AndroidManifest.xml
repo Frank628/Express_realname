@@ -45,7 +45,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.jinchao.express.activity.MainActivity" android:launchMode="singleTop" android:screenOrientation="portrait">
+        <activity android:name="com.jinchao.express.activity.MainActivity" android:hardwareAccelerated="false" android:launchMode="singleTop" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.hardware.usb.action.USB_DEVICE_ATTACHED" />
             </intent-filter>
