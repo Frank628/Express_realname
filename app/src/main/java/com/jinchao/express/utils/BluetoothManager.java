@@ -160,9 +160,9 @@ public class BluetoothManager {
 		if (isEnabled()) {
 			Set<BluetoothDevice> pairedDevices = mBluetoothAdapter.getBondedDevices();
 			if (pairedDevices.size() > 0) {
-				ArrayList<HashMap<String, String>> list = new ArrayList<>();
+				ArrayList<HashMap<String, String>> list = new ArrayList<HashMap<String, String>>();
 				for (BluetoothDevice device : pairedDevices) {
-					HashMap<String, String> map = new HashMap<>();
+					HashMap<String, String> map = new HashMap<String, String>();
 					map.put(DEVICE_NAME, device.getName());
 					map.put(DEVICE_ADDRESS, device.getAddress());
 					list.add(map);
@@ -211,7 +211,7 @@ public class BluetoothManager {
 			case BluetoothDevice.ACTION_FOUND: {
 				if (btDeviceDiscoveredListener != null) {
 					BluetoothDevice btDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-					HashMap<String, String> map = new HashMap<>();
+					HashMap<String, String> map = new HashMap<String, String>();
 					map.put(DEVICE_ADDRESS, btDevice.getAddress());
 					map.put(DEVICE_NAME, btDevice.getName());
 					btDeviceDiscoveredListener.bluetoothDeviceDiscovered(map);

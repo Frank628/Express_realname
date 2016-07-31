@@ -47,6 +47,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     @ViewInject(R.id.toolbar) private Toolbar toolbar;
     @ViewInject(R.id.title)private TextView title;
+    @ViewInject(R.id.tv_right)public TextView tv_right;
     private Fragment currentFragment;
     private NfcAdapter mAdapter;
     protected PendingIntent mPendingIntent;
@@ -134,7 +135,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-
+        tv_right.setVisibility(View.GONE);
         if (id == R.id.nav_manage) {
             title.setText(getResources().getString(R.string.setting));
             currentFragment=new SettingFragment();

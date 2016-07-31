@@ -5,7 +5,9 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">设置</string>
+    <string name="bluetooth_settings">蓝牙设置</string>
     <string name="title_activity_login">登录</string>
+    <string name="package_detail">物流详情</string>
     <!-- Strings related to login -->
     <string name="prompt_email">用户名/手机号</string>
     <string name="prompt_password">请输入6-16位密码</string>

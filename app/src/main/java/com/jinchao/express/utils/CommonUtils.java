@@ -175,7 +175,10 @@ public class CommonUtils {
     }
     @SuppressLint("SimpleDateFormat")
     public static File getTempImage() {
-        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "IMG_face.jpg");
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), GenerateGUID()+".jpg");
+    }
+    public static File getCompareTempImage() {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM), "compare.jpg");
     }
     public static String  getSdPath() {
         String path="";
@@ -192,19 +195,19 @@ public class CommonUtils {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    public static String getPicPath(String type){
-        String path="";
-        String name =GenerateGUID();
-        if(Environment.MEDIA_MOUNTED.equals(Environment.getExternalStorageState())){
-            path=Environment.getExternalStorageDirectory().getAbsolutePath()+"/express/temp/"+name+".jpg";
-        }else{
-            path="/data"+ Environment.getDataDirectory().getAbsolutePath() + "/com.jinchao.express/databases/temp/"+name+".jpg";
-        }
-        return path;
-    }
+
 
     public static final String GenerateGUID(){
         UUID uuid = UUID.randomUUID();
         return uuid.toString();
     }
+
+//    public static File getPicFile(){
+//        File file;
+//        File dcim = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+//        String path = dcim.getAbsolutePath();
+//        path = dcim + "/express/temp/";
+//        file=new File(new File(path),GenerateGUID()+".jpg");
+//        return file;
+//    }
 }

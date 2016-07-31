@@ -32,6 +32,12 @@
                 android:textStyle="bold"
                 android:lineSpacingExtra="5dp"
                 android:layout_marginTop="15dp"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="15dp"
+                android:src="@drawable/jinghui"/>
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -65,18 +71,17 @@
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
-
             <Button
-                android:id="@+id/email_sign_in_button"
-                style="?android:textAppearanceSmall"
+                android:id="@+id/btn_log"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="@string/action_sign_in"
                 android:textColor="@color/white"
                 android:background="@drawable/btn_login_click"
-                android:textStyle="bold" />
+                />
 
         </LinearLayout>
     </ScrollView>
+
 </LinearLayout>

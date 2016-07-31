@@ -192,4 +192,21 @@
         android:layout_marginRight="15dp"
         android:scaleType="fitCenter"
         android:layout_alignTop="@+id/name"/>
+
+    <RelativeLayout
+        android:id="@+id/cover"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/idcard_cover_bg">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="老用户直接点击左侧加号\n请将身份证贴放在NFC感应区\n或点击读卡使用蓝牙OTG设备读卡"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/small_text_size"
+            android:lineSpacingExtra="8dp"
+            android:gravity="center"/>
+
+    </RelativeLayout>
 </RelativeLayout>

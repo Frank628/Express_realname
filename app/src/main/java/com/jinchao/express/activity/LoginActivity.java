@@ -29,6 +29,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import com.jinchao.express.R;
+import com.jinchao.express.base.BaseActivity;
 import com.jinchao.express.utils.CommonUtils;
 import com.jinchao.express.widget.NavigationLayout;
 
@@ -37,17 +38,17 @@ import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
 
 @ContentView(R.layout.activity_login)
-public class LoginActivity extends AppCompatActivity{
+public class LoginActivity extends BaseActivity{
 
-    @ViewInject(R.id.navigation) NavigationLayout navigationLayout;
+    @ViewInject(R.id.navigation)
+    private NavigationLayout navigationLayout;
     @ViewInject(R.id.email) private AutoCompleteTextView mEmailView;
     @ViewInject(R.id.password) private EditText mPasswordView;
-    @ViewInject(R.id.login_form) private View mLoginFormView;
-    @ViewInject(R.id.email_sign_in_button) private  Button mEmailSignInButton;
+//    @ViewInject(R.id.login_form) private View mLoginFormView;
+    @ViewInject(R.id.btn_log) private  Button mEmailSignInButton;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        x.view().inject(this);
         // Set up the login form.
         navigationLayout.setCenterText(getResources().getString(R.string.title_activity_login));
         navigationLayout.setLeftTextOnClick(new OnClickListener() {
@@ -66,7 +67,6 @@ public class LoginActivity extends AppCompatActivity{
                 return false;
             }
         });
-
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

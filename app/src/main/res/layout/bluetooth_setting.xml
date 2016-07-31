@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/white"
+    android:orientation="vertical" >
+	<include layout="@layout/navigation_layout"
+		android:id="@+id/navigation"/>
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:background="#EDEDED" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical" >
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+
+        <LinearLayout
+            android:id="@+id/device_remember"
+            android:layout_width="fill_parent"
+            android:layout_height="45dp"
+            android:background="@color/white"
+            android:orientation="horizontal" >
+
+            <TextView
+                android:layout_width="0dip"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="默认记住蓝牙"
+                android:textColor="@color/title2"
+                android:textSize="15sp" />
+
+            <TextView
+                android:id="@+id/textview_remember"
+                style="@style/settextview"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/rt"
+            android:visibility="gone">
+            
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="1dp"
+	            android:layout_marginLeft="20dp"
+	            android:background="@color/line" />
+	
+	        <LinearLayout
+	            android:id="@+id/device_forget"
+	            android:layout_width="fill_parent"
+	            android:layout_height="45dp"
+	            android:background="@color/white"
+	            android:orientation="horizontal" >
+	
+	            <TextView
+	                android:layout_width="0dip"
+	                android:layout_height="match_parent"
+	                android:layout_marginLeft="20dp"
+	                android:layout_weight="1"
+	                android:gravity="center_vertical"
+	                android:text="忘记蓝牙"
+	                android:textColor="@color/title2"
+	                android:textSize="15sp" />
+	        </LinearLayout>
+	
+	        <View
+	            android:layout_width="fill_parent"
+	            android:layout_height="1dp"
+	            android:layout_marginLeft="20dp"
+	            android:background="@color/line" />
+	
+	        <LinearLayout
+	            android:id="@+id/long_time"
+	            android:layout_width="fill_parent"
+	            android:layout_height="45dp"
+	            android:background="@color/white"
+	            android:orientation="horizontal" >
+	
+	            <TextView
+	                android:layout_width="0dip"
+	                android:layout_height="match_parent"
+	                android:layout_marginLeft="20dp"
+	                android:layout_weight="1"
+	                android:gravity="center_vertical"
+	                android:text="蓝牙最长连接时间"
+	                android:textColor="@color/title2"
+	                android:textSize="15sp" />
+	
+	            <TextView
+	                android:id="@+id/textview_time"
+	                style="@style/settextview"
+	                android:layout_width="wrap_content"
+	                android:layout_height="wrap_content" />
+	        </LinearLayout>
+	
+        </LinearLayout>
+
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1dp"
+            android:background="@color/line" />
+        
+    </LinearLayout>
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="#EDEDED" />
+
+</LinearLayout>

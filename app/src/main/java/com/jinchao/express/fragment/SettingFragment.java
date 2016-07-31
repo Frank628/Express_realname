@@ -2,6 +2,7 @@ package com.jinchao.express.fragment;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.jinchao.express.Constants;
 import com.jinchao.express.R;
+import com.jinchao.express.activity.BluetoothSettingActivity;
 import com.jinchao.express.base.BaseFragment;
 import com.jinchao.express.utils.SharePrefUtil;
 
@@ -103,6 +105,11 @@ public class SettingFragment extends BaseFragment {
         });
         ad.show();
     }
+    @Event(value = R.id.bt_setting)
+    private void bluetoothsettingClick(View view){
+        Intent intent =new Intent(getActivity(), BluetoothSettingActivity.class);
+        startActivity(intent);
+    }
     class DeviceRadioOnClick implements DialogInterface.OnClickListener {
         private int index;
         public DeviceRadioOnClick(int index) {
@@ -137,7 +144,7 @@ public class SettingFragment extends BaseFragment {
 
         public void onClick(DialogInterface dialog, int whichButton) {
             setIndex(whichButton);
-            SharePrefUtil.saveString(getActivity(), "net",Constants.NET_AREA[index]);
+            SharePrefUtil.saveString(getActivity(), Constants.NET_WAY,Constants.NET_AREA[index]);
             dialog.dismiss();
             if (Constants.NET_AREA[index].equals("手动")) {
                 AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
@@ -166,10 +173,10 @@ public class SettingFragment extends BaseFragment {
                                         "([01]?\\d\\d?|2[0-4]\\d|25[0-5])\\." +
                                         "([01]?\\d\\d?|2[0-4]\\d|25[0-5])$";
                         Pattern pattern=Pattern.compile(IP_ADDRESS_PATTERN);
-                        String manualInputIP=manualIPET.getText().toString().trim();
-                        boolean matchResult=pattern.matcher(manualInputIP).matches();
-                        preferences.edit().putString("ManualIP",manualInputIP).commit();
-                        if(matchResult==false){
+                                    String manualInputIP=manualIPET.getText().toString().trim();
+                                    boolean matchResult=pattern.matcher(manualInputIP).matches();
+                                    preferences.edit().putString("ManualIP",manualInputIP).commit();
+                                    if(matchResult==false){
                             Toast.makeText(SettingFragment.this.getActivity(),"输入的IP可能不正确",Toast.LENGTH_LONG).show();
                         }
                         ipDialog.dismiss();

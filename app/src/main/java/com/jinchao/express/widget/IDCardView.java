@@ -18,6 +18,7 @@ import com.jinchao.express.R;
 public class IDCardView extends RelativeLayout {
     private TextView tv_name,tv_nation,tv_gender,tv_year,tv_month,tv_day,tv_address,tv_idcard;
     private ImageView iv_pic;
+    private RelativeLayout cover;
     public IDCardView(Context context) {
         super(context);
 
@@ -31,6 +32,7 @@ public class IDCardView extends RelativeLayout {
     @Override
     protected void onFinishInflate() {
         super.onFinishInflate();
+        cover=(RelativeLayout) findViewById(R.id.cover);
         tv_name=(TextView) findViewById(R.id.tv_name);
         tv_nation=(TextView) findViewById(R.id.tv_nation);
         tv_gender=(TextView) findViewById(R.id.tv_sex);
@@ -58,6 +60,7 @@ public class IDCardView extends RelativeLayout {
     }
 
     public void setIDCard(String name, String gender, String nation, String year, String month, String day, String address, String cardnum, Bitmap pic){
+        cover.setVisibility(View.GONE);
         tv_name.setText(name);
         tv_gender.setText(gender);
         tv_nation.setText(nation);
@@ -70,6 +73,7 @@ public class IDCardView extends RelativeLayout {
     }
 
     public void clearIDCard(){
+        cover.setVisibility(View.VISIBLE);
         tv_name.setText("");
         tv_gender.setText("");
         tv_nation.setText("");
@@ -77,6 +81,7 @@ public class IDCardView extends RelativeLayout {
         tv_month.setText("");
         tv_day.setText("");
         tv_address.setText("");
+        tv_idcard.setText("");
         iv_pic.setImageBitmap(null);
     }
 

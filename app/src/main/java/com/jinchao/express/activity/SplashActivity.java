@@ -3,7 +3,6 @@ package com.jinchao.express.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.PersistableBundle;
 
 import com.jinchao.express.R;
 import com.jinchao.express.base.BaseActivity;

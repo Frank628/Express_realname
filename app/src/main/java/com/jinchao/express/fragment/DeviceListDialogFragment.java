@@ -25,7 +25,7 @@ public class DeviceListDialogFragment extends DialogFragment implements Bluetoot
 
 	private ListView deviceListLV = null;
 	private Button refreshBTN = null;
-	private ArrayList<HashMap<String, String>> deviceList = new ArrayList<>();
+	private ArrayList<HashMap<String, String>> deviceList = new ArrayList<HashMap<String, String>>();
 	private DeviceListBaseAdapter adapter = null;
 	private BluetoothManager mBluetoothManager = null;
 	private Timer timer;

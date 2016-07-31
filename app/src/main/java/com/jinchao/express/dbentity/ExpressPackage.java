@@ -3,11 +3,13 @@ package com.jinchao.express.dbentity;
 import org.xutils.db.annotation.Column;
 import org.xutils.db.annotation.Table;
 
+import java.io.Serializable;
+
 /**
  * Created by OfferJiShu01 on 2016/7/28.
  */
 @Table(name = "express")
-public class ExpressPackage {
+public class ExpressPackage implements Serializable{
     @Column(name = "id",isId = true,autoGen=true)
     private int id;
     @Column(name = "idcard")
