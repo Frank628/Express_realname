@@ -16,6 +16,7 @@ import android.widget.Toast;
 
 import com.jinchao.express.Constants;
 import com.jinchao.express.R;
+import com.jinchao.express.activity.AboutActivity;
 import com.jinchao.express.activity.BluetoothSettingActivity;
 import com.jinchao.express.base.BaseFragment;
 import com.jinchao.express.utils.SharePrefUtil;
@@ -108,6 +109,11 @@ public class SettingFragment extends BaseFragment {
     @Event(value = R.id.bt_setting)
     private void bluetoothsettingClick(View view){
         Intent intent =new Intent(getActivity(), BluetoothSettingActivity.class);
+        startActivity(intent);
+    }
+    @Event(value = R.id.about_us)
+    private void aboutClick(View view){
+        Intent intent =new Intent(getActivity(), AboutActivity.class);
         startActivity(intent);
     }
     class DeviceRadioOnClick implements DialogInterface.OnClickListener {

@@ -68,6 +68,7 @@
         <activity android:name=".activity.LoginActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".activity.PackageDetailActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <activity android:name=".activity.BluetoothSettingActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
+        <activity android:name=".activity.AboutActivity" android:screenOrientation="portrait" android:windowSoftInputMode="stateHidden|adjustPan"></activity>
         <service android:name="com.baidu.location.f" android:enabled="true" android:process=":remote">
         </service>
     </application>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:background="#f5f5f5"
+    android:gravity="center_horizontal"
+    android:layout_height="match_parent">
+    <include layout="@layout/navigation_layout"
+        android:id="@+id/navigation"/>
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@mipmap/ic_launcher"
+        android:layout_marginTop="30dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/title2"
+        android:textSize="17sp"
+        android:gravity="center"
+        android:text="10年经验--"
+        android:layout_marginTop="25dp"/>
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/title2"
+        android:textSize="21sp"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:text="信息专业采集服务提供商"
+        android:layout_marginTop="12dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/title2"
+        android:textSize="19sp"
+        android:gravity="center"
+        android:text="苏州市金朝电子工程有限公司"
+        android:layout_marginTop="25dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/title2"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="电话：0512-65288818-208"
+        android:layout_marginTop="25dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/title2"
+        android:textSize="18sp"
+        android:gravity="center"
+        android:text="手机：18913501605"
+        android:layout_marginTop="25dp"/>
+</LinearLayout>

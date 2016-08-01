@@ -202,7 +202,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:text="老用户直接点击左侧加号\n请将身份证贴放在NFC感应区\n或点击读卡使用蓝牙OTG设备读卡"
+            android:text="★ 请将身份证稳定放置在手机背部\n★ 老客户请点击左侧加号进行选择"
             android:textColor="@android:color/white"
             android:textSize="@dimen/small_text_size"
             android:lineSpacingExtra="8dp"

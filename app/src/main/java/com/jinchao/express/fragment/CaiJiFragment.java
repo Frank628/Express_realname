@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -123,7 +124,25 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
                 case IDReader.CONNECT_FAILED:
                     hideProcessDialog();
                     if (idReader.strErrorMsg != null) {
-                        Toast.makeText(getActivity(),"连接失败：" + idReader.strErrorMsg,Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(getActivity(),"连接失败：" + idReader.strErrorMsg,Toast.LENGTH_SHORT).show();
+                        String str="未响应，请将身份证紧贴手机背部重试!";
+                        if (idReader.getConnectType() == ConnectType.BLUETOOTH) {
+                            str="未响应，请将身份证紧贴读卡器重试!";
+                        }else if(idReader.getConnectType() == ConnectType.NFC){
+                            str="未响应，请将身份证紧贴手机背部重试!";
+                        }else{
+                            str="读卡失败，"+idReader.strErrorMsg;
+                        }
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                        builder.setMessage(str);
+                        builder.setTitle("提示");
+                        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                           @Override
+                           public void onClick(DialogInterface dialog, int which) {
+                              dialog.dismiss();
+                              }
+                           });
+                        builder.create().show();
                     }
                     isReading = false;
                     if (idReader.getConnectType() == ConnectType.BLUETOOTH) {
@@ -157,7 +176,24 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
         }
         if (user==null){
             facematch.setVisibility(View.GONE);
-            Toast.makeText(getActivity(),"读卡失败！",Toast.LENGTH_SHORT).show();
+            String str="未响应，请将身份证紧贴手机背部重试!";
+            if (idReader.getConnectType() == ConnectType.BLUETOOTH) {
+                str="未响应，请将身份证紧贴读卡器重试!";
+            }else if(idReader.getConnectType() == ConnectType.NFC){
+                str="未响应，请将身份证紧贴手机背部重试!";
+            }else{
+                str="读卡失败，"+idReader.strErrorMsg;
+            }
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            builder.setMessage(str);
+            builder.setTitle("提示");
+            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.create().show();
         }else{
             facematch.setVisibility(View.VISIBLE);
             imgA=user.headImg;
