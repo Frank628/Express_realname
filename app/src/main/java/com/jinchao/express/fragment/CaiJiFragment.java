@@ -13,20 +13,14 @@ import android.hardware.usb.UsbManager;
 import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.NfcB;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Parcelable;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -36,8 +30,6 @@ import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.caihua.cloud.common.User;
 import com.caihua.cloud.common.entity.Server;
 import com.caihua.cloud.common.enumerate.ConnectType;
@@ -47,6 +39,7 @@ import com.jinchao.express.Constants;
 import com.jinchao.express.R;
 import com.jinchao.express.activity.ScanActivity;
 import com.jinchao.express.base.BaseFragment;
+import com.jinchao.express.base.BaseReadCardFragment;
 import com.jinchao.express.dbentity.ExpressPackage;
 import com.jinchao.express.location.MyLocation;
 import com.jinchao.express.utils.Base64Coder;
@@ -57,7 +50,6 @@ import com.jinchao.express.view.FacePop;
 import com.jinchao.express.webservice.CompareAsyncTask;
 import com.jinchao.express.webservice.CompareResult;
 import com.jinchao.express.widget.IDCardView;
-
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -68,7 +60,6 @@ import org.xutils.view.annotation.ContentView;
 import org.xutils.view.annotation.Event;
 import org.xutils.view.annotation.ViewInject;
 import org.xutils.x;
-
 import java.io.File;
 import java.text.SimpleDateFormat;
 
@@ -76,7 +67,7 @@ import java.text.SimpleDateFormat;
  * Created by OfferJiShu01 on 2016/7/5.
  */
 @ContentView(R.layout.fragment_caiji)
-public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragment.DeviceListDialogFragmentListener {
+public class CaiJiFragment extends BaseReadCardFragment{
 
     @ViewInject(R.id.btn_scan) ImageButton btn_scan;
     @ViewInject(R.id.idcard) IDCardView idCardView;
@@ -91,10 +82,7 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
     public static final int KUIDIDAN_PIC=1002;
     public static final int REQUEST_CODE_CAMERA = 2001;
     private ContactsPop pop;
-    private IDReader idReader;
-    protected boolean isReading = false;// NFC用
-    private ProgressDialog dialog;
-    protected DeviceListDialogFragment deviceListDialogFragment;
+
     private byte[] imgA,imgB;
     public File photofile,tempFile,kuaiJianFile,kuaididanFile;
     private String kuaijianpic=null,kuadidanipic=null,personpic=null;
@@ -110,9 +98,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
         params.height=(CommonUtils.getWindowWidth(getActivity())-CommonUtils.dip2px(getActivity(),35))*377/600;
         idCardView.setLayoutParams(params);
         idReader = new IDReader(getActivity(), mHandler);
-        deviceListDialogFragment = DeviceListDialogFragment.newInstance();
-        deviceListDialogFragment.setDeviceListDialogFragmentListener(CaiJiFragment.this);
-
     }
     @SuppressLint("HandlerLeak")
     Handler mHandler = new Handler() {
@@ -124,7 +109,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
                 case IDReader.CONNECT_FAILED:
                     hideProcessDialog();
                     if (idReader.strErrorMsg != null) {
-//                        Toast.makeText(getActivity(),"连接失败：" + idReader.strErrorMsg,Toast.LENGTH_SHORT).show();
                         String str="未响应，请将身份证紧贴手机背部重试!";
                         if (idReader.getConnectType() == ConnectType.BLUETOOTH) {
                             str="未响应，请将身份证紧贴读卡器重试!";
@@ -133,16 +117,7 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
                         }else{
                             str="读卡失败，"+idReader.strErrorMsg;
                         }
-                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                        builder.setMessage(str);
-                        builder.setTitle("提示");
-                        builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                           @Override
-                           public void onClick(DialogInterface dialog, int which) {
-                              dialog.dismiss();
-                              }
-                           });
-                        builder.create().show();
+                        showErrorDialog(str);
                     }
                     isReading = false;
                     if (idReader.getConnectType() == ConnectType.BLUETOOTH) {
@@ -151,11 +126,8 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
                     break;
                 case IDReader.READ_CARD_SUCCESS:
 //                    BeepManager.playsuccess(getActivity());
-
                     showIDCardInfo(false, (User) msg.obj);
-
                     break;
-
                 case IDReader.READ_CARD_FAILED:
 //                    BeepManager.playfail(getActivity());
                     showIDCardInfo(false, null);
@@ -184,16 +156,7 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
             }else{
                 str="读卡失败，"+idReader.strErrorMsg;
             }
-            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-            builder.setMessage(str);
-            builder.setTitle("提示");
-            builder.setPositiveButton("确认", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.dismiss();
-                }
-            });
-            builder.create().show();
+            showErrorDialog(str);
         }else{
             facematch.setVisibility(View.VISIBLE);
             imgA=user.headImg;
@@ -206,30 +169,7 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
         isReading = false;
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        String net="自动";
-        switch (net) {
-            case "自动":
-                idReader.SetNetType(NetType.publicNetwork);
-                break;
-            case "移动":
-                idReader.SetNetType(NetType.privateNetwork, new Server("221.181.64.41", 2005));
-                break;
-            case "电信":
-                idReader.SetNetType(NetType.privateNetwork, new Server("61.155.106.65", 2005));
-                break;
-            case "联通":
-                idReader.SetNetType(NetType.privateNetwork, new Server("61.51.110.49", 2005));
-                break;
-            case "手动":
-                idReader.SetNetType(NetType.privateNetwork, new Server(PreferenceManager.getDefaultSharedPreferences(getActivity()).getString("ManualIP",""),2005));
-                break;
-            default:
-                break;
-        }
-    }
+
     @Event(value = R.id.btn_kuaididan)
     private void kuaididanClick(View view){
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
@@ -285,10 +225,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
     }
     @Event(value = R.id.facematch)
     private void imgCompareClick(View view){
-//        if (facePop!=null){
-//            showfacepop();
-//            return;
-//        }
         photofile=CommonUtils.getCompareTempImage();
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photofile));
@@ -300,7 +236,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
         showIDCardInfo(true,null);
         String net = SharePrefUtil.getString(getActivity(),Constants.DEVICE_WAY,"自动");
         switch (net) {
-
             case "自动":
                 int a = HasOTGDeviceConnected();
                 if (a == 0) {
@@ -395,8 +330,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
         } catch (DbException e) {
             e.printStackTrace();
         }
-
-
     }
     public void onNewIntent(Intent intent){
         Parcelable parcelable = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
@@ -428,8 +361,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
         super.onStop();
         EventBus.getDefault().unregister(this);
     }
-
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -476,44 +407,6 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
             }
         });
     }
-
-    protected void showProcessDialog(String msg) {
-        dialog = new ProgressDialog(getActivity());
-        dialog.setMessage(msg);
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);// 设置进度条的形式为圆形转动的进度条
-        dialog.setCancelable(false);// 设置是否可以通过点击Back键取消
-        dialog.setCanceledOnTouchOutside(false);// 设置在点击Dialog外是否取消Dialog进度条
-        dialog.show();
-    }
-    protected void hideProcessDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-            dialog = null;
-        }
-    }
-    protected int HasOTGDeviceConnected() {
-        // TODO Auto-generated method stub
-        UsbManager mUsbManager = (UsbManager) getActivity().getSystemService(Context.USB_SERVICE);
-        if (!mUsbManager.getDeviceList().isEmpty()) {
-            return 0;
-        } else if (mUsbManager.getAccessoryList() != null) {
-            return 1;
-        }
-        return -1;
-    }
-
-    @Override
-    public void onConnect(String mac) {
-
-        if (SharePrefUtil.getBoolean(getActivity(),Constants.REMEMBER_BLUETOOTH,false)) {
-            SharePrefUtil.saveString(getActivity(), "mac", mac);
-        }
-        if (mac != null) {
-            showProcessDialog("正在读卡中，请稍后");
-            int delayMillis = SharePrefUtil.getInt(getActivity(),Constants.BluetoothSetting_long_time,15);
-            idReader.connect(ConnectType.BLUETOOTH, mac, delayMillis);
-        }
-    }
     public void setPhoto(File photofile) {
         imgB = null;
         if (photofile != null && photofile.exists() && photofile.length() > 10) {
@@ -558,10 +451,5 @@ public class CaiJiFragment extends BaseFragment implements DeviceListDialogFragm
             }
         }
     }
-    public void backgroundAlpha(float bgAlpha)
-    {
-        WindowManager.LayoutParams lp = getActivity().getWindow().getAttributes();
-        lp.alpha = bgAlpha; //0.0-1.0
-        getActivity().getWindow().setAttributes(lp);
-    }
+
 }
