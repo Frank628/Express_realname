@@ -47,7 +47,7 @@ public class BaseFragment extends Fragment implements NetWorkManager.NetConnectC
 
     @Override
     public void change(NetWorkManager.NetWorkInfo netWorkInfo) {
-        Toast.makeText(getActivity(),netWorkInfo.simiProvider+""+netWorkInfo.netState+"",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity(),netWorkInfo.simiProvider+""+netWorkInfo.netState+"",Toast.LENGTH_SHORT).show();
         System.out.println(netWorkInfo.netState+"");
     }
 }

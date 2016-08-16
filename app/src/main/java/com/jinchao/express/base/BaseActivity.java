@@ -27,7 +27,7 @@ public class BaseActivity extends FragmentActivity implements NetWorkManager.Net
 
     @Override
     public void change(NetWorkManager.NetWorkInfo netWorkInfo) {
-        Toast.makeText(this,netWorkInfo.simiProvider+""+netWorkInfo.netState+"",Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this,netWorkInfo.simiProvider+""+netWorkInfo.netState+"",Toast.LENGTH_SHORT).show();
         System.out.println(netWorkInfo.netState+"");
     }
 

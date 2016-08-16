@@ -32,6 +32,7 @@ public class NetWorkManager {
     public static  enum SIMIProvider{CUCC,CTCC,CMCC,UNKNOW_PROVIDER,NO_SIM};
     private NetConnectChangeListener netConnectChangeListener;
     static volatile NetWorkManager defaultInstance;
+    private Context decontext;
     NetChangeBroadCast mReceiver=new NetChangeBroadCast();
     public static NetWorkManager getInstance(){
         if (defaultInstance == null) {
@@ -52,6 +53,7 @@ public class NetWorkManager {
      * @param obj
      */
     public void regist(Object obj){
+
         IntentFilter mFilter = new IntentFilter();
         mFilter.addAction(ConnectivityManager.CONNECTIVITY_ACTION); // 添加接收网络连接状态改变的Action
         if (obj instanceof Fragment){
@@ -60,6 +62,7 @@ public class NetWorkManager {
             ((Context)obj).registerReceiver(mReceiver, mFilter);
         }
         defaultInstance.setOnNetChangeListener((NetConnectChangeListener)obj);
+
     }
     /**
      * 反注册广播
@@ -79,8 +82,13 @@ public class NetWorkManager {
      * @return
      */
     public static boolean isNetWorkAvailable(Context context){
+
         NetworkInfo networkInfo =((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
-        return networkInfo.isAvailable();
+        if (networkInfo!=null)
+            return networkInfo.isAvailable();
+
+        return false;
+
     }
 
     /**
@@ -97,13 +105,13 @@ public class NetWorkManager {
         return SIMIProvider.NO_SIM;
             // IMSI号前面3位460是国家，紧接着后面2位00 02是中国移动，01是中国联通，03是中国电信。其中
         if (IMSI.startsWith("46000") || IMSI.startsWith("46002")) {
-            simiProvider =SIMIProvider.CMCC; //"中国移动";
+            simiProvider = SIMIProvider.CMCC; //"中国移动";
         } else if (IMSI.startsWith("46001")) {
-            simiProvider =SIMIProvider.CUCC;// "中国联通";
+            simiProvider = SIMIProvider.CUCC;// "中国联通";
         } else if (IMSI.startsWith("46003")) {
-            simiProvider =SIMIProvider.CTCC;//"中国电信";
+            simiProvider = SIMIProvider.CTCC;//"中国电信";
         } else{
-            simiProvider =SIMIProvider.UNKNOW_PROVIDER;//"未知运营商";
+            simiProvider = SIMIProvider.UNKNOW_PROVIDER;//"未知运营商";
         }
         return simiProvider;
     }
@@ -114,7 +122,7 @@ public class NetWorkManager {
      * @return
      */
     public static NetState checkNetwork(Context context){
-        NetState netState=NetState.NET_NO;
+        NetState netState= NetState.NET_NO;
         NetworkInfo networkInfo =((ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE)).getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()){
             if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI){
@@ -160,7 +168,7 @@ public class NetWorkManager {
         }
         return netState;
     }
-    private class NetChangeBroadCast extends BroadcastReceiver{
+    private class NetChangeBroadCast extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
             NetWorkInfo netWorkInfo =new NetWorkInfo(checkNetwork(context),getProvider(context),isNetWorkAvailable(context));
